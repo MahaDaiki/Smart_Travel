@@ -12,5 +12,37 @@ Class Bus{
         $this->companyname = $companyname;
 
     }
+
+    /**
+     * Get the value of busnumber
+     */ 
+    public function getBusnumber()
+    {
+        return $this->busnumber;
+    }
+
+    /**
+     * Get the value of licenseplate
+     */ 
+    public function getLicenseplate()
+    {
+        return $this->licenseplate;
+    }
+
+    /**
+     * Get the value of capacity
+     */ 
+    public function getCapacity()
+    {
+        return $this->capacity;
+    }
+
+    /**
+     * Get the value of companyname
+     */ 
+    public function getCompanyname()
+    {
+        return $this->companyname;
+    }
 }
 ?>
