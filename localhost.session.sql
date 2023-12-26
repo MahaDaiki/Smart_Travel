@@ -34,12 +34,12 @@ CREATE TABLE Bus (
 );
 --@block
 CREATE TABLE Schedule (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     date Date,
     departuretime Time,
     arrivaltime Time,
     availableseats INT,
-    price Float,
+    price Float,  
     busnumber INT,
     startcity VARCHAR(255),
     endcity VARCHAR(255), 
