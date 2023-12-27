@@ -1,6 +1,6 @@
 <?php
-require_once("Connection.php");
-require_once("ClassRoad.php");
+require_once("Model\config\Connection.php");
+require_once("Model\Road\ClassRoad.php");
 
 class RoadDao {
     private $db;

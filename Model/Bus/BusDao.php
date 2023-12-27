@@ -1,6 +1,6 @@
 <?php
-require_once("Connection.php");
-require_once("ClassBus.php");
+require_once("Model\config\Connection.php");
+require_once("Model\Bus\ClassBus.php");
 
 class BusDao {
     private $db;

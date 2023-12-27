@@ -1,6 +1,6 @@
 <?php
-require_once("Connection.php");
-require_once("ClassSchedule.php");
+require_once("Model\config\Connection.php");
+require_once("Model\Schedule\ClassSchedule.php");
 
 class ScheduleDao {
     private $db;
