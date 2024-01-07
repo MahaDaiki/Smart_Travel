@@ -1,6 +1,7 @@
 <?php
 require_once("Model\config\Connection.php");
 require_once("Model\Road\ClassRoad.php");
+include_once("Model\city\Classcity.php");
 
 class RoadDao {
     private $db;
@@ -14,9 +15,12 @@ class RoadDao {
         $stmt = $this->db->query($query);
         $stmt->execute();
         $roadData = $stmt->fetchAll();
+        // $cityDAO = new CityDao;
         $roads = array();
         foreach ($roadData as $road) {
-            $roads[] = new Road($road["distance"], $road["duration"], $road["startcity"], $road["endcity"]);
+            // $startcity = $cityDAO->getCityByName($road['cityname']);
+            // $endcity = $cityDAO->getCityByName($road['cityname']);
+            $roads[] = new Road($road["distance"], $road["duration"], $road['startcity'], $road['endcity']);
         }
         return $roads;
     }
@@ -37,6 +41,23 @@ class RoadDao {
         $query = "DELETE FROM Road WHERE startcity = '" . $startCity . "' AND endcity = '" . $endCity . "'";
         $stmt = $this->db->query($query);
         $stmt->execute();
+    }
+
+    public function getRoadByCities($StartCity, $EndCity){
+        $query = "SELECT * FROM Road WHERE startcity = '$StartCity' AND endcity = '$EndCity'";
+      
+        $stmt = $this->db->prepare($query);
+     
+        print_r($query);
+        $roadData = $stmt->fetch();
+        $cityDAO = new CityDao;
+        if ($roadData) {
+            $StartCity = $cityDAO->getCityByName($roadData['cityname']);
+            $EndCity = $cityDAO->getCityByName($roadData['cityname']);
+            return new Road($roadData["distance"], $roadData["duration"], $StartCity,$EndCity);
+        }
+
+        return null; 
     }
 }
 ?>

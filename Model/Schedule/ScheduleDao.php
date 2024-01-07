@@ -15,7 +15,14 @@ class ScheduleDao {
         $stmt->execute();
         $scheduleData = $stmt->fetchAll();
         $schedules = array();
+        $CityDao = new RoadDao(); // Assuming you have a CityDao class
+        $BusDao = new BusDao();
+
         foreach ($scheduleData as $schedule) {
+            $busnumber= $BusDao->getbusbyid($schedule["busnumber"]);
+            $startCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
+            $endCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
+    
             $schedules[] = new Schedule(
                 $schedule["id"],
                 $schedule["date"],
@@ -23,13 +30,44 @@ class ScheduleDao {
                 $schedule["arrivaltime"],
                 $schedule["availableseats"],
                 $schedule["price"],
-                $schedule["busnumber"],
-                $schedule["startcity"],
-                $schedule["endcity"]
+                $busnumber,
+                $startCity,
+                $endCity
             );
         }
+    
         return $schedules;
     }
+    public function get_schedule_by_id($scheduleId) {
+        $query = "SELECT * FROM Schedule WHERE id = :scheduleId";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':scheduleId' => $scheduleId]);
+        $scheduleData = $stmt->fetch();
+    
+        if (!$scheduleData) {
+            return null; // Schedule not found
+        }
+    
+        $CityDao = new RoadDao(); // Assuming you have a CityDao class
+        $BusDao = new BusDao();
+    
+        $busnumber = $BusDao->getbusbyid($scheduleData["busnumber"]);
+        $startCity = $CityDao->getRoadByCities($scheduleData["startcity"], $scheduleData["endcity"]);
+        $endCity = $CityDao->getRoadByCities($scheduleData["endcity"],$scheduleData["endcity"]);
+    
+        return new Schedule(
+            $scheduleData["id"],
+            $scheduleData["date"],
+            $scheduleData["departuretime"],
+            $scheduleData["arrivaltime"],
+            $scheduleData["availableseats"],
+            $scheduleData["price"],
+            $busnumber,
+            $startCity,
+            $endCity
+        );
+    }
+    
 
     public function insert_schedule($schedule){
         $query = "INSERT INTO Schedule (date, departuretime, arrivaltime, availableseats, price, busnumber, startcity, endcity) VALUES (
@@ -66,5 +104,46 @@ class ScheduleDao {
         $stmt = $this->db->query($query);
         $stmt->execute();
     }
+    public function get_schedule_by_cities($startCity, $endCity,$date, $availableseats){
+        $query = "SELECT Schedule.*, Road.*, Company.img AS companyimg
+            FROM Schedule
+            INNER JOIN Route ON Schedule.startcity = Road.startcity and schedule.endcity = road.endcity
+            INNER JOIN Bus ON Schedule.busnumber = Bus.busnumber
+            INNER JOIN Company ON Bus.companyname = Company.companyname
+            WHERE Schedule.date >= :date
+            AND Schedule.availableSeats >= :places
+            AND Route.startCity = :startCity
+            AND Route.endCity = :endCity";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':startCity' => $startCity, ':endCity' => $endCity]);
+        $scheduleData = $stmt->fetchAll();
+        
+        $schedules = array();
+        $CityDao = new RoadDao(); 
+        $BusDao = new BusDao();
+    
+        foreach ($scheduleData as $schedule) {
+            $busnumber = $BusDao->getbusbyid($schedule["busnumber"]);
+            $startCity = $CityDao->getRoadByCities($schedule["StartCity"], $schedule["EndCity"]);
+            $endCity = $CityDao->getRoadByCities($schedule["EndCity"], $schedule["EndCity"]);
+    
+            $schedules[] = new Schedule(
+                $schedule["id"],
+                $schedule["date"],
+                $schedule["departuretime"],
+                $schedule["arrivaltime"],
+                $schedule["availableseats"],
+                $schedule["price"],
+                $busnumber,
+                $startCity,
+                $endCity
+            );
+        }
+    
+        return $schedules;
+    }
+    
+    
+    
 }
 ?>
