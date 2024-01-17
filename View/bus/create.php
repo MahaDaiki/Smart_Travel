@@ -10,11 +10,7 @@ ob_start();
 
     <!-- Form for creating a new bus -->
     <form method="post" action="index.php?action=busstore">
-        <div class="mb-3">
-            <label for="busNumber" class="form-label">Bus Number</label>
-           
-            <input type="text" class="form-control" id="busNumber" name="busNumber" required>
-        </div>
+    
 
         <div class="mb-3">
             <label for="licensePlate" class="form-label">License Plate</label>

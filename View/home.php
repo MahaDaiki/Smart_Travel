@@ -35,7 +35,7 @@ ob_start();
 								<div class="tab-content" id="v-pills-tabContent">
 
 									<div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
-										<form action="index.php?action=search" class="search-property-1">
+										<form  method="POST" action="index.php?action=search" class="search-property-1">
 											<div class="row no-gutters">
 												<div class="col-md d-flex">
 													<div class="form-group p-4 border-0">
@@ -73,10 +73,10 @@ ob_start();
 												</div>
 												<div class="col-md d-flex">
 													<div class="form-group p-4">
-														<label for="#">Date</label>
+														<label for="#">Date?</label>
 														<div class="form-field">
 															<div class="icon"><span class="fa fa-calendar"></span></div>
-															<input type="text" class="form-control checkout_date" placeholder="Date" name="travelDate" id="travelDate">
+															<input type="date" class="form-control " placeholder="Date" name="travelDate" id="travelDate">
 														</div>
 													</div>
 												</div>

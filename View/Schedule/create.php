@@ -3,7 +3,7 @@ $title = "Create Schedule";
 ob_start();
 ?>
 
-<div class="container mt-5">
+<div class="container mt-5 container">
     <h1>
         <?= $title ?>
     </h1>
@@ -34,7 +34,7 @@ ob_start();
             <select class="form-select" id="bus" name="bus" required>
                 <?php foreach ($buses as $bus): ?>
                 <option>
-                    <?= htmlspecialchars($bus->getBusnumber()) ?>
+                    <?= $bus->getBusnumber() ?>
                 </option>
                 <?php endforeach; ?>
             </select>
@@ -42,27 +42,19 @@ ob_start();
 
         <div class="mb-3">
             <label for="route" class="form-label">Route</label>
-            <select class="form-select" id="route" name="route" required>
-                <?php foreach ($routes as $route): ?>
-                <option>
-                    <?= htmlspecialchars($route->getStartCity()) ?> to
-                    <?= htmlspecialchars($route->getEndCity()) ?>
-                </option>
-                <?php endforeach; ?>
-            </select>
+            <select class="form-select" id="road" name="road" required>
+               <?php foreach ($road as $roads): ?>
+                   <?php
+           $roadID = $roads->getStartCity() . '|' . $roads->getEndCity();
+           ?>
+           <option value="<?= $roadID ?>">
+               <?= $roads->getStartCity() ?> to <?= $roads->getEndCity() ?>
+           </option>
+               <?php endforeach; ?>
+           </select>
         </div>
 
-        <div class="mb-3">
-            <label for="company" class="form-label">Company</label>
-            <select class="form-select" id="company" name="company" required>
-                <?php foreach ($companies as $company): ?>
-                <option >
-                    <?= htmlspecialchars($company->getCompanyname()) ?>
-                </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
+        
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
             <input type="number" class="form-control" id="price" name="price" required>

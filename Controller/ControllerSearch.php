@@ -34,8 +34,10 @@ class SearchController
                     $selectedCompanyName = $_POST['companyFilter'];
 
                     // Adjust the logic based on your actual filter criteria
-                    foreach ($availableSchedules as $schedule) {
-                        $scheduleCompanyName = $schedule->getBusnumber()->getCompany()->getCompanyname();
+                    foreach ($availableSchedules["company"] as $schedule) {
+                      
+                        
+                        $scheduleCompanyName = $schedule->getCompanyname();
 
                         if ($selectedCompanyName === '' || $scheduleCompanyName == $selectedCompanyName) {
                             $filteredSchedules[] = $schedule;

@@ -29,37 +29,35 @@ public function __construct()
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate and process the form data
-            // $busNumber = $_POST['busNumber'];
+       
             $licensePlate = $_POST['licensePlate'];
             $capacity = $_POST['capacity'];
             $companyName = $_POST['company']; 
            
 
             // Retrieve Company object
-            $company = $this->companyDAO->getCompanyByName($companyName);
+           
             // Create a new Bus object
-            $bus = new Bus(0, $licensePlate, $capacity,$company);
+            $bus = new Bus(0, $licensePlate, $capacity,$companyName);
 
             // Pass the Bus object to the addBus method in BusDAO
             $this->BusDao->insert_bus($bus);
 
             // Redirect to the index page or show the newly created bus
-            header("Location: index.php?action=busdisplay");
+            header("Location: index.php?action=busindex");
             exit();
         }
     }
 
-    public function edit($busID)
+    public function edit($busnumber)
     {
-        // Retrieve a specific bus by ID to populate the edit form
-        $bus = $this->BusDao->getBusById($busID);
+        $bus = $this->BusDao->getBusById($busnumber);
 
         // Fetch the list of companies
         $companies = $this->companyDAO->getAllCompanies();
-
+  
         // Display the form for editing the bus
-        include_once 'View/bus/edit.php';
+        include_once 'View\bus\edit.php';
     }
 
     public function update($busnumber)
@@ -68,22 +66,17 @@ public function __construct()
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validate and process the form data
             $licensePlate = $_POST['licensePlate'];
-            $companyname = $_POST['company']; // Assuming this is the company name from the form
+            $companyname = $_POST['company']; 
             $capacity = $_POST['capacity'];
     
             // Retrieve the existing bus
             $existingBus = $this->BusDao->getBusById($busnumber);
     
-            // Update its properties
-            // $existingBus->setLicensePlate($licensePlate);
-            // $existingBus->setCapacity($capacity);
-    
             // // Retrieve Company object based on name
             // $company = $this->companyDAO->getCompanyByName($companyname);
-    
             // // Set the company for the bus
             // $existingBus->setCompany($company);
-    
+            $existingBus = new bus(  $busnumber,$licensePlate,$capacity ,$companyname);
             // Pass the updated bus object to the updateBus method in BusDAO
             $this->BusDao->update_bus($existingBus);
     

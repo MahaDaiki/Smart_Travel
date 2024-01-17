@@ -1,6 +1,7 @@
 <?php
 require_once("Model\config\Connection.php");
 require_once("Model\Schedule\ClassSchedule.php");
+include_once("Model\Company\CompanyDao.php");
 
 class ScheduleDao {
     private $db;
@@ -15,13 +16,13 @@ class ScheduleDao {
         $stmt->execute();
         $scheduleData = $stmt->fetchAll();
         $schedules = array();
-        $CityDao = new RoadDao(); // Assuming you have a CityDao class
-        $BusDao = new BusDao();
+        // $CityDao = new RoadDao(); 
+        // $BusDao = new BusDao();
 
         foreach ($scheduleData as $schedule) {
-            $busnumber= $BusDao->getbusbyid($schedule["busnumber"]);
-            $startCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
-            $endCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
+            // $busnumber= $BusDao->getbusbyid($schedule["busnumber"]);
+            // $startCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
+            // $endCity = $CityDao->getRoadByCities($schedule["startcity"],["endcity"]); 
     
             $schedules[] = new Schedule(
                 $schedule["id"],
@@ -30,9 +31,9 @@ class ScheduleDao {
                 $schedule["arrivaltime"],
                 $schedule["availableseats"],
                 $schedule["price"],
-                $busnumber,
-                $startCity,
-                $endCity
+                $schedule["busnumber"],
+                $schedule["startcity"],
+                $schedule["endcity"]
             );
         }
     
@@ -80,7 +81,7 @@ class ScheduleDao {
             '" . $schedule->getStartCity() . "',
             '" . $schedule->getEndCity() . "'
         )";
-        $stmt = $this->db->query($query);
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
     }
 
@@ -105,27 +106,28 @@ class ScheduleDao {
         $stmt->execute();
     }
     public function get_schedule_by_cities($startCity, $endCity,$date, $availableseats){
-        $query = "SELECT Schedule.*, Road.*, Company.img AS companyimg
+        $query = "SELECT Schedule.*, Road.*
             FROM Schedule
-            INNER JOIN Route ON Schedule.startcity = Road.startcity and schedule.endcity = road.endcity
+            INNER JOIN Road ON Schedule.startcity = Road.startcity and schedule.endcity = road.endcity
             INNER JOIN Bus ON Schedule.busnumber = Bus.busnumber
-            INNER JOIN Company ON Bus.companyname = Company.companyname
-            WHERE Schedule.date >= :date
-            AND Schedule.availableSeats >= :places
-            AND Route.startCity = :startCity
-            AND Route.endCity = :endCity";
+            WHERE Schedule.date = '$date'
+            AND Schedule.availableSeats >= '$availableseats'
+            AND Road.startCity = '$startCity'
+            AND Road.endCity = '$endCity'";
         $stmt = $this->db->prepare($query);
-        $stmt->execute([':startCity' => $startCity, ':endCity' => $endCity]);
+        $stmt->execute();
         $scheduleData = $stmt->fetchAll();
         
         $schedules = array();
-        $CityDao = new RoadDao(); 
-        $BusDao = new BusDao();
-    
+        $company = array();
+
+        // $CityDao = new RoadDao(); 
+        // $BusDao = new BusDao();
+    $companyDAO = new  CompanyDao();
         foreach ($scheduleData as $schedule) {
-            $busnumber = $BusDao->getbusbyid($schedule["busnumber"]);
-            $startCity = $CityDao->getRoadByCities($schedule["StartCity"], $schedule["EndCity"]);
-            $endCity = $CityDao->getRoadByCities($schedule["EndCity"], $schedule["EndCity"]);
+            // $busnumber = $BusDao->getbusbyid($schedule["busnumber"]);
+            // $startCity = $CityDao->getRoadByCities($schedule["StartCity"], $schedule["EndCity"]);
+            // $endCity = $CityDao->getRoadByCities($schedule["EndCity"], $schedule["EndCity"]);
     
             $schedules[] = new Schedule(
                 $schedule["id"],
@@ -134,13 +136,50 @@ class ScheduleDao {
                 $schedule["arrivaltime"],
                 $schedule["availableseats"],
                 $schedule["price"],
-                $busnumber,
-                $startCity,
-                $endCity
+                $schedule["busnumber"],
+                $schedule["startcity"],
+                $schedule["endcity"]
             );
+            $company[$schedule["busnumber"]] =  $companyDAO->getCompanybyBusNumber( $schedule["busnumber"]);
+            
         }
-    
-        return $schedules;
+        return array(
+            "schedules" => $schedules,
+            "company"=> $company
+        );
+        // return $schedules;
+    }
+
+    public function get_schedule_by_company($company, $date) {
+        $sql = "SELECT schedule.* FROM schedule
+        INNER JOIN bus ON schedule.busnumber = bus.busnumber
+        INNER JOIN company ON bus.companyname = company.companyname
+        WHERE bus.companyname = ? AND schedule.date = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$company, $date]);
+        $scheduleData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result_id = [];
+
+        foreach($scheduleData as $sch) {
+            $result_id[] = $sch['id'];
+        }
+        return json_encode($result_id);
+    }
+
+    public function get_schedule_by_date($date, $depart, $end) {
+        $sql = "SELECT schedule.* FROM schedule
+        INNER JOIN bus ON schedule.busnumber = bus.busnumber
+        INNER JOIN company ON bus.companyname = company.companyname
+        WHERE schedule.date = ? AND schedule.startcity = ? AND schedule.endcity = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$date, $depart, $end]);
+        $scheduleData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result_id = [];
+
+        foreach($scheduleData as $sch) {
+            $result_id[] = $sch['id'];
+        }
+        return json_encode($scheduleData);
     }
     
     

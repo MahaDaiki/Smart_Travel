@@ -1,16 +1,18 @@
 <?php
+
+
 class ScheduleController
 {
     private $scheduleDAO;
     private $busDAO;
     private $companyDAO;
-    private $routeDAO;
+    private $roadDAO;
     public function __construct()
     {
         $this->scheduleDAO = new ScheduleDAO();
         $this->busDAO = new BusDAO();
         $this->companyDAO = new CompanyDAO();
-        $this->routeDAO = new RoadDAO();
+        $this->roadDAO = new RoadDAO();
     }
 
     public function index()
@@ -18,8 +20,8 @@ class ScheduleController
         // Retrieve all schedules
         $schedules = $this->scheduleDAO->get_Schedule();
 
-        // Pass the data to the view (you may have a specific view for listing schedules)
-        include_once 'View/schedule/index.php';
+    
+        include_once 'View\Schedule\scheduleindex.php';
     }
 
     public function create()
@@ -27,7 +29,7 @@ class ScheduleController
         $schedules = $this->scheduleDAO->get_Schedule();
         $buses = $this->busDAO->get_Bus();
         $companies = $this->companyDAO->getAllCompanies();
-        $routes = $this->routeDAO->get_Road();
+        $road = $this->roadDAO->get_Road();
         // Display the form for creating a new schedule
         include_once 'View/schedule/create.php';
     }
@@ -40,25 +42,21 @@ class ScheduleController
             $departureTime = $_POST['departureTime'];
             $arrivalTime = $_POST['arrivalTime'];
             $availableSeats = $_POST['availableSeats'];
-            $busnumber = $_POST['bus'];
-            $startcity = $_POST['startcity'];
-            $endcity = $_POST['endcity'];
-            $companyname = $_POST['company'];
             $price = $_POST['price'];
-
-            // Retrieve the selected bus and route based on IDs
-            $selectedBus = $this->busDAO->getBusById($busnumber);
-            $selectedRoad = $this->routeDAO->getRoadByCities($startcity, $endcity);
-
+            $busnumber = $_POST['bus'];
+            $roadParts = explode('|', $_POST['road']);
+            $startCity = $roadParts[0];
+            $endCity = $roadParts[1];
             // Create a new Schedule object
-            $schedule = new Schedule(null, $date, $departureTime, $arrivalTime, $availableSeats, $selectedBus, $selectedRoad, $companyname, $price);
+            $schedule = new Schedule(null, $date, $departureTime, $arrivalTime, $availableSeats, $price,$busnumber, $startCity, $endCity);
 
             // Pass the Schedule object to the addSchedule method in ScheduleDAO
             $this->scheduleDAO->insert_schedule($schedule);
 
             // Redirect to the index page or show the newly created schedule
             header("Location: index.php?action=scheduleindex");
-            exit();
+
+            
         }
     }
 
@@ -68,7 +66,7 @@ class ScheduleController
         $schedules = $this->scheduleDAO->get_Schedule();
         $buses = $this->busDAO->get_Bus();
         $companies = $this->companyDAO->getAllCompanies();
-        $routes = $this->routeDAO->get_Road();
+        $road = $this->roadDAO->get_Road();
         // Retrieve a specific schedule by ID to populate the edit form
         $schedule = $this->scheduleDAO->get_schedule_by_id($scheduleID);
         // Display the form for editing the schedule
@@ -77,32 +75,30 @@ class ScheduleController
 
     public function update($scheduleID)
     {
-        // Handle the form submission to update an existing schedule in the database
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validate and process the form data
             $date = $_POST['date'];
             $departureTime = $_POST['departureTime'];
             $arrivalTime = $_POST['arrivalTime'];
             $availableSeats = $_POST['availableSeats'];
-            $busID = $_POST['bus'];
-            $routeID = $_POST['route'];
-            $companyID = $_POST['company'];
+            $busnumber = $_POST['bus'];
+            $routeParts = explode('|', $_POST['road']);
+            $startCity = $routeParts[0];
+            $endCity = $routeParts[1];
             $price = $_POST['price'];
 
             // Retrieve the existing schedule
             $existingSchedule = $this->scheduleDAO->get_schedule_by_id($scheduleID);
-
-            // Update its properties
-
-            // Pass the updated schedule object to the updateSchedule method in ScheduleDAO
+ 
+            $existingSchedule = new Schedule(  0,$date,$departureTime,$arrivalTime,$availableSeats,$price,$busnumber,$startCity,$endCity);
+         
             $this->scheduleDAO->update_schedule($existingSchedule);
+           
 
-            // Redirect to the index page or show the updated schedule
-            header("Location: index.php?action=scheduleindex");
-            exit();
-        } else {
-            // Display an error or redirect to the edit page with a message
-        }
+            
+            // header("Location: index.php?action=scheduleindex");
+           
+        } 
     }
 
     public function delete($scheduleID)

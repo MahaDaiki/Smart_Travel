@@ -8,7 +8,7 @@ ob_start();
         <ul class="nav">
             <li class="nav-item "><a class="nav-link" href="index.php?action=roadindex">Road</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=busindex">Bus</a></li>
-            <li class="nav-item active"><a class="nav-link" href="index.php?action=scheduleindex">Schedule</a></li>
+            <li class="nav-item activee"><a class="nav-link" href="index.php?action=scheduleindex">Schedule</a></li>
         </ul>
     </div>
 </div>
@@ -20,6 +20,7 @@ ob_start();
 
     <?php if (!empty($schedules)): ?>
         <table class="table">
+           
             <thead>
                 <tr>
                     <th>ID</th>
@@ -28,9 +29,9 @@ ob_start();
                     <th>Arrival Time</th>
                     <th>Available Seats</th>
                     <th>Bus</th>
-                    <th>Route</th>
-                    <th>Company Image</th>
                     <th>Price</th>
+                    <th>Route</th>
+                    
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -38,42 +39,37 @@ ob_start();
                 <?php foreach ($schedules as $schedule): ?>
                     <tr>
                         <td>
-                            <?= $schedule->getScheduleID() ?>
+                            <?= $schedule->getId() ?>
                         </td>
                         <td>
                             <?= $schedule->getDate() ?>
                         </td>
                         <td>
-                            <?= $schedule->getDepartureTime() ?>
+                            <?= $schedule->getDeparturetime() ?>
                         </td>
                         <td>
-                            <?= $schedule->getArrivalTime() ?>
+                            <?= $schedule->getArrivaltime() ?>
                         </td>
                         <td>
-                            <?= $schedule->getAvailableSeats() ?>
+                            <?= $schedule->getAvailableseats() ?>
                         </td>
                         <td>
-                            <?= $schedule->getBus()->getBusID() ?>
+                            <?= $schedule->getBusnumber() ?>
                         </td>
                         <td>
-                            <?= $schedule->getRoute()->getStartCityName() ?> to
-                            <?= $schedule->getRoute()->getEndCityName() ?>
+                            <?= $schedule->getPrice(). "DH"?>
+                        </td>
+                        <td>
+                            <?= $schedule->getStartcity() ?> to
+                            <?= $schedule->getEndcity() ?>
                         </td>
 
-                        <td>
-
-                            <img style="width: 7rem;" src=" <?= $schedule->getCompanyImageByID($schedule->getCompanyID()) ?>"
-                                alt=" <?= $schedule->getCompanyImageByID($schedule->getCompanyID()) ?>">
-
-                        </td>
-                        <td>
-                            <?= $schedule->getPrice() . "DH" ?>
-                        </td>
+                       
                         <td>
                             <!-- Add links to edit and delete each schedule -->
-                            <a href="index.php?action=scheduleedit&id=<?= $schedule->getScheduleID() ?>"
+                            <a href="index.php?action=scheduleedit&id=<?= $schedule->getId() ?>"
                                 class="btn btn-warning">Edit</a>
-                            <a href="index.php?action=scheduledelete&id=<?= $schedule->getScheduleID() ?>"
+                            <a href="index.php?action=scheduledelete&id=<?= $schedule->getId() ?>"
                                 class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

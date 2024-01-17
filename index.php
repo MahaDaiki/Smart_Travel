@@ -30,8 +30,11 @@ if (ISSET($_GET['action'])){
     case 'search':
         $SearchController->index();
         break;
-    case 'filter':
-        $FilterController->index();
+    case 'filterByCompany':
+        $FilterController->filterByCompany();
+        break;
+    case 'filterByTime':
+        $FilterController->filterByTime();
         break;
     case 'Admin':
         $AdminController->admin();
@@ -46,12 +49,7 @@ if (ISSET($_GET['action'])){
         $BusController->store();
         break;
     case 'busedit':
-        if (isset($_GET['busnumber']) && !empty($_GET['busnumber'])) {
-            $BusController->edit($_GET['busnumber']);
-        } else {
-            // Handle the case when 'busnumber' is not set
-            echo "Invalid bus number.";
-        }
+        $BusController->edit($_GET['busnumber']);
         break;
     case 'busupdate':
    
@@ -73,16 +71,16 @@ if (ISSET($_GET['action'])){
         $RoadController->store();
         break;
     case 'roadedit':
-        $RoadController->edit($_GET['startCity'],$_GET['endcity']);
+        $RoadController->edit($_GET['startCity'],$_GET['endCity']);
         break;
     case 'roadupdate':
-        $RoadController->update($_GET['startCity'],$_GET['endcity']);
+        $RoadController->update($_GET['startCity'],$_GET['endCity']);
         break;
     case 'roaddelete':
-        $RoadController->delete($_GET['startCity'],$_GET['endcity']);
+        $RoadController->delete($_GET['startCity'],$_GET['endCity']);
         break;
     case 'roaddestroy':
-        $RoadController->destroy($_GET['startCity'],$_GET['endcity']);
+        $RoadController->destroy($_GET['startCity'],$_GET['endCity']);
         break;
     case 'scheduleindex':
  

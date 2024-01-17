@@ -1,11 +1,11 @@
 <?php
 Class Company {
-    private $companyname;
+    private $companyname ;
     private $shortname;
     private $img;
 
     public function __construct($companyname,$shortname,$img){
-        $this->copanyname=$companyname;
+        $this->companyname=$companyname;
         $this->shortname=$shortname;
         $this->img=$img;
         
@@ -33,6 +33,9 @@ Class Company {
     public function getImg()
     {
         return $this->img;
+    }
+    public function test(){
+        return $this->companyname;
     }
 }
 

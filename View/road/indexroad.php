@@ -7,7 +7,7 @@ ob_start();
     <div>
         <h1 class="text-center">Admin Page</h1>
         <ul class="nav">
-            <li class="nav-item active"><a class="nav-link" href="index.php?action=roadindex">Road</a></li>
+            <li class="nav-item activee"><a class="nav-link" href="index.php?action=roadindex">Road</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=busindex">Bus</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=scheduleindex">Schedule</a></li>
         </ul>
@@ -40,8 +40,8 @@ ob_start();
                         <td><?= $route->getDuration() ?></td>
                         <td>
                         
-    <a href="index.php?action=routeedit&startCity=<?= $route->getStartCity() ?>&endCity=<?= $route->getEndCity() ?>" class="btn btn-warning">Edit</a>
-    <a href="index.php?action=routedelete&startCity=<?= $route->getStartCity() ?>&endCity=<?= $route->getEndCity() ?>" class="btn btn-danger">Delete</a>
+    <a href="index.php?action=roadedit&startCity=<?= $route->getStartCity() ?>&endCity=<?= $route->getEndCity() ?>" class="btn btn-warning">Edit</a>
+    <a href="index.php?action=roaddelete&startCity=<?= $route->getStartCity() ?>&endCity=<?= $route->getEndCity() ?>" class="btn btn-danger">Delete</a>
 </td>
 
                         
@@ -50,7 +50,7 @@ ob_start();
             </tbody>
         </table>
     <?php else: ?>
-        <p class="text-center">No routes found.</p>
+        <p class="text-center">No road found.</p>
     <?php endif; ?>
 </div>
 

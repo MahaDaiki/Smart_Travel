@@ -16,7 +16,7 @@ ob_start();
         <h1 class="text-center">Admin Page</h1>
         <ul class="nav">
             <li class="nav-item"><a class="nav-link" href="index.php?action=roadindex">Road</a></li>
-            <li class="nav-item active"><a class="nav-link" href="index.php?action=busindex">Bus</a></li>
+            <li class="nav-item activee"><a class="nav-link" href="index.php?action=busindex">Bus</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=scheduleindex">Schedule</a></li>
         </ul>
     </div>
@@ -56,8 +56,8 @@ ob_start();
                 </td>
                 <td>
                     <!-- Add links to edit and delete each bus -->
-                    <a href="index.php?action=busedit&number=<?= $bus->getBusnumber() ?>" class="btn btn-warning">Edit</a>
-                    <a href="index.php?action=busdelete&number=<?= $bus->getBusnumber() ?>" class="btn btn-danger">Delete</a>
+                    <a href="index.php?action=busedit&busnumber=<?= $bus->getBusnumber() ?>" class="btn btn-warning">Edit</a>
+                    <a href="index.php?action=busdelete&busnumber=<?= $bus->getBusnumber() ?>" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             <?php endforeach; ?>

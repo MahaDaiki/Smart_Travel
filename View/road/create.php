@@ -9,7 +9,7 @@ ob_start();
     </h1>
 
     <!-- Form for creating a new route -->
-    <form method="post" action="index.php?action=roadstore">
+    <form class="container" method="post" action="index.php?action=roadstore">
         <div class="mb-3">
             <label for="startCity" class="form-label">Start City</label>
             <!-- Dropdown for start city selection -->
@@ -41,7 +41,7 @@ ob_start();
 
         <div class="mb-3">
             <label for="duration" class="form-label">Duration</label>
-            <input type="number" class="form-control" id="duration" name="duration" required>
+            <input type="time" class="form-control" id="duration" name="duration" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Create Route</button>

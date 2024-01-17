@@ -27,12 +27,13 @@ class RoadDao {
 
     public function insert_road($road){
         $query = "INSERT INTO Road VALUES (" . $road->getDistance() . ", '" . $road->getDuration() . "', '" . $road->getStartCity() . "', '" . $road->getEndCity() . "')";
-        $stmt = $this->db->query($query);
-        $stmt->execute();
+        $stmt = $this->db->prepare($query);
+        $result=$stmt->execute();
+        return $result;
     }
 
     public function update_road($road){
-        $query = "UPDATE Road SET distance = " . $road->getDistance() . ", duration = '" . $road->getDuration() . "', startcity = '" . $road->getStartCity() . "', endcity = '" . $road->getEndCity() . "' WHERE startcity = '" . $road->getStartCity() . "' AND endcity = '" . $road->getEndCity() . "'";
+        $query = "UPDATE Road SET distance = " . $road->getDistance() . ", duration = '" . $road->getDuration() . "' WHERE startcity = '" . $road->getStartCity() . "' AND endcity = '" . $road->getEndCity() . "'";
         $stmt = $this->db->query($query);
         $stmt->execute();
     }
@@ -45,16 +46,16 @@ class RoadDao {
 
     public function getRoadByCities($StartCity, $EndCity){
         $query = "SELECT * FROM Road WHERE startcity = '$StartCity' AND endcity = '$EndCity'";
-      
         $stmt = $this->db->prepare($query);
-     
-        print_r($query);
-        $roadData = $stmt->fetch();
-        $cityDAO = new CityDao;
+          $stmt->execute();
+
+        $roadData = $stmt->fetch(); 
+       
+        // $cityDAO = new CityDao;
         if ($roadData) {
-            $StartCity = $cityDAO->getCityByName($roadData['cityname']);
-            $EndCity = $cityDAO->getCityByName($roadData['cityname']);
-            return new Road($roadData["distance"], $roadData["duration"], $StartCity,$EndCity);
+            // $StartCity = $cityDAO->getCityByName($roadData['cityname']);
+            // $EndCity = $cityDAO->getCityByName($roadData['cityname']);
+            return new Road($roadData["distance"], $roadData["duration"], $roadData['startcity'],$roadData['endcity']);
         }
 
         return null; 

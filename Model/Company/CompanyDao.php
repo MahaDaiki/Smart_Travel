@@ -37,5 +37,19 @@ class CompanyDao {
 
         return null; 
     }
+    public function getCompanybyBusNumber($number){
+        $query ="SELECT company.companyname , company.shortname,company.img FROM company 
+        INNER JOIN `bus` ON `bus`.companyname = `company`.companyname
+        INNER join schedule  ON `schedule`.busnumber = `bus`.busnumber
+        WHERE schedule.busnumber = $number  limit 1";
+
+        $stmt = $this->db->query($query);
+        $stmt->execute();
+        $companyname = $stmt->fetch();
+        if($companyname){
+            return new company($companyname['companyname'],$companyname['shortname'],$companyname['img']);
+        }
+
+    }
 }
 ?>

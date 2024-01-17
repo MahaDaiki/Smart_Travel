@@ -1,3 +1,5 @@
+DROP database smarttravel;
+CREATE database smarttravel;
 use smarttravel;
 CREATE TABLE City (
     cityname VARCHAR(255) PRIMARY KEY
@@ -24,7 +26,7 @@ Create Table Company(
 
 --@block
 CREATE TABLE Bus (
-    busnumber INT PRIMARY KEY ,
+    busnumber INT PRIMARY KEY AUTO_INCREMENT ,
     licenseplate VARCHAR(250) UNIQUE,
     capacity INT,
     companyname VARCHAR(250),
@@ -35,18 +37,20 @@ CREATE TABLE Bus (
 --@block
 CREATE TABLE Schedule (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    date Date,
-    departuretime Time,
-    arrivaltime Time,
+    date DATE,
+    departuretime TIME,
+    arrivaltime TIME,
     availableseats INT,
-    price Float,  
+    price FLOAT,  
     busnumber INT,
     startcity VARCHAR(255),
     endcity VARCHAR(255), 
     FOREIGN KEY (busnumber) REFERENCES Bus(busnumber),
-    FOREIGN KEY (startcity, endcity) REFERENCES Road(startcity, endcity)
-
+    FOREIGN KEY (startcity, endcity)
+        REFERENCES Road(startcity, endcity)
+        ON DELETE CASCADE
 );
+
 
 --@block
 INSERT INTO City VALUES
@@ -98,23 +102,23 @@ INSERT INTO Road (distance, duration, startcity, endcity) VALUES
 
 --@block
 INSERT INTO Bus VALUES
-(1, 'ABC123', 50, 'Compagnie de transports au Maroc'),
-(2, 'XYZ456', 40, 'TajVoyage'),
-(4, 'PQR012', 55, 'SAT First'),
-(5, 'JKL345', 60, 'Ghazala'),
-(6, 'DEF678', 48, 'Sotram'),
-(7, 'MNO901', 42, 'GloBus Trans'),
-(8, 'IJK890', 46, 'Trans Al Yamama'),
-(9, 'NOP123', 52, 'Pullman Du Sud'),
-(10, 'ABC456', 40, 'Trans Annamir'),
-(11, 'ABC789', 50, 'Compagnie de transports au Maroc'),
-(12, 'XYZ012', 45, 'Compagnie de transports au Maroc'),
-(13, 'LMN567', 42, 'TajVoyage'),
-(14, 'PQR890', 48, 'TajVoyage'),
-(15, 'JKL901', 55, 'Pullman Du Sud'),
-(16, 'DEF234', 46, 'Pullman Du Sud'),
-(17, 'MNO567', 60, 'Ghazala'),
-(18, 'RST890', 52, 'Ghazala')
+( 'ABC123', 50, 'Compagnie de transports au Maroc'),
+( 'XYZ456', 40, 'TajVoyage'),
+( 'PQR012', 55, 'SAT First'),
+( 'JKL345', 60, 'Ghazala'),
+( 'DEF678', 48, 'Sotram'),
+( 'MNO901', 42, 'GloBus Trans'),
+( 'IJK890', 46, 'Trans Al Yamama'),
+( 'NOP123', 52, 'Pullman Du Sud'),
+( 'ABC456', 40, 'Trans Annamir'),
+( 'ABC789', 50, 'Compagnie de transports au Maroc'),
+( 'XYZ012', 45, 'Compagnie de transports au Maroc'),
+( 'LMN567', 42, 'TajVoyage'),
+( 'PQR890', 48, 'TajVoyage'),
+( 'JKL901', 55, 'Pullman Du Sud'),
+( 'DEF234', 46, 'Pullman Du Sud'),
+( 'MNO567', 60, 'Ghazala'),
+( 'RST890', 52, 'Ghazala')
 --@block
 INSERT INTO Schedule (date, departuretime, arrivaltime, availableseats, price, busnumber, startcity, endcity) VALUES
 ('2024-01-17', '14:00:00', '18:30:00', 40, 200.0, 1, 'Safi', 'El Jadida'),

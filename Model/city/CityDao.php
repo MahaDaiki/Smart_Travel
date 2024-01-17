@@ -25,7 +25,7 @@ class CityDao {
     }
     public function getCityByName($cityname)
     {
-        $query = "SELECT * FROM City WHERE cityname = $cityname";
+        $query = "SELECT * FROM City WHERE cityname = '$cityname'";
       
         $stmt = $this->db->query($query);
         $stmt->execute();
