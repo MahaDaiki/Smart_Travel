@@ -36,6 +36,9 @@ if (ISSET($_GET['action'])){
     case 'filterByTime':
         $FilterController->filterByTime();
         break;
+    case 'filterByPrice':
+        $FilterController->filterByPrice();
+        break;
     case 'Admin':
         $AdminController->admin();
         break;

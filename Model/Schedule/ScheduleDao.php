@@ -182,7 +182,21 @@ class ScheduleDao {
         return json_encode($scheduleData);
     }
     
-    
+    public function FilterByPrice($pricemin,$pricemax){
+        $sql ="SELECT schedule.* FROM schedule
+          INNER JOIN bus ON schedule.busnumber = bus.busnumber
+        INNER JOIN company ON bus.companyname = company.companyname
+        Where price BETWEEN $pricemin AND $pricemax";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $scheduleData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result_id = [];
+
+        foreach($scheduleData as $sch) {
+            $result_id[] = $sch['id'];
+        }
+        return json_encode($result_id);
+    }
     
 }
 ?>

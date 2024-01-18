@@ -34,7 +34,7 @@ $date = $_POST['travelDate'];
             <option value="night">Night</option>
         </select>
     </div>
-    <button type="button" class="btn btn-primary" id="filterButton">Filter</button>
+   
 </form>
 <div id="filteredResults">
     <!-- Div to display filtered results -->
@@ -211,8 +211,7 @@ $date = $_POST['travelDate'];
 
 
     });
-    // });
-    // });
+
 </script>
 
 

@@ -51,7 +51,7 @@
 					<div class="col-md pt-5">
 						<div class="ftco-footer-widget pt-md-5 mb-4">
 							<h2 class="ftco-heading-2">About</h2>
-							<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae delectus eligendi a alias unde, deleniti earum maiores! Blanditiis porro repudiandae laudantium labore nulla, dolorem odio non suscipit consectetur temporibus sit!.</p>
+							<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae delectus eligendi a alias unde, deleniti earum maiores!</p>
 							<ul class="ftco-footer-social list-unstyled float-md-left float-lft">
 								<li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
 								<li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
@@ -72,19 +72,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="col-md pt-5 border-left">
-						<div class="ftco-footer-widget pt-md-5 mb-4">
-							<h2 class="ftco-heading-2">Experience</h2>
-							<ul class="list-unstyled">
-								<li><a href="#" class="py-2 d-block">Adventure</a></li>
-								<li><a href="#" class="py-2 d-block">Hotel and Restaurant</a></li>
-								<li><a href="#" class="py-2 d-block">Beach</a></li>
-								<li><a href="#" class="py-2 d-block">Nature</a></li>
-								<li><a href="#" class="py-2 d-block">Camping</a></li>
-								<li><a href="#" class="py-2 d-block">Party</a></li>
-							</ul>
-						</div>
-					</div>
+					
 					<div class="col-md pt-5 border-left">
 						<div class="ftco-footer-widget pt-md-5 mb-4">
 							<h2 class="ftco-heading-2">Have a Questions?</h2>
